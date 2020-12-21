@@ -1,6 +1,7 @@
 '''
 '''
-
+import os
+import sys
 import argparse
 import configparser
 from typing import List
@@ -20,7 +21,7 @@ class ConfigOption:
         self.doc = doc
 
     def __str__(self):
-        return f'-{self.short:4} --{self.full}  value={repr(self.value)}  doc={repr(self.doc)}'
+        return f'{type(self).__name__}(-{self.short:4} --{self.full}  value={repr(self.value)}  doc={repr(self.doc)})'
 
     def add_argument(self, parser):
         short, full = f'-{self.short}', f'--{self.full}'
@@ -50,7 +51,8 @@ class Configuration:
         return self
 
     def __str__(self):
-        return '\n'.join([str(o) for o in self.options])
+        title = f'{type(self).__name__}({repr(self.name)})'
+        return '\n'.join([title] + [f'+--{o}' for o in self.options])
 
     def __getitem__(self, index):
         short, _ = ConfigOption.get_short_n_full_form(index)
@@ -73,6 +75,9 @@ class Configuration:
             config.write(f)
 
     def load(self, fname):
+        if not os.path.isfile(fname):
+            print(f'WARNING! file `{fname}` does not exist')
+            return
         config = configparser.ConfigParser()
         config.read(fname)
         if self.name in config:
@@ -83,3 +88,13 @@ class Configuration:
                         option.value = eval(option.value)
         else:
             print(f'WARNING! section `{self.name}` does not found in `{fname}`')
+
+    def parse(self, args):
+        for option in self.options:
+            specified = False
+            for arg in sys.argv[1:]:
+                if f'-{option.short}' in arg or f'--{option.full}' in arg:
+                    specified = True
+                    break
+            if specified and hasattr(args, option.full):
+                option.value = getattr(args, option.full)
