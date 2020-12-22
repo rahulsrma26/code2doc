@@ -134,12 +134,17 @@ class DocModule:
                 variables.append((item, value))
         return variables
 
+    @staticmethod
+    def from_path(path: str, package: str, name: str = ''):
+        old_path = sys.path[0]
+        sys.path[0] = os.path.abspath(path)
+        module = import_module(name, package) if name else import_module(package)
+        sys.path[0] = old_path
+        return DocModule(module)
+
+
 if __name__ == "__main__":
-    # sys.path[0] = os.path.join(os.getcwd())
-    # print(sys.path)
-    module = import_module('doc_types')
-    print(DocModule(module))
-    # print(pprint.pprint(module.__dict__))
+    print(DocModule.from_path('./src', 'code2doc', '.doc_types'))
     # for function in DocFunction.extract_from_module(module): 
     #     print(function)
     # for c in DocClass.extract_from_module(module): 
