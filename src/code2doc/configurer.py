@@ -38,7 +38,7 @@ class ConfigOption:
 
 class Configuration:
 
-    def __init__(self, name='code2doc'):
+    def __init__(self, name):
         self.name = name
         self.shorts = {}
         self.options = []
