@@ -25,14 +25,14 @@ class DocFunction:
     def extract_from_module(cls, module: types.ModuleType) -> List['DocFunction']:
         for _, obj in getmembers(module, isfunction):
             if obj.__module__ == module.__name__:
-                yield DocFunction(obj)
+                yield cls(obj)
 
     @classmethod
     def extract_from_class(cls, obj: object) -> List['DocFunction']:
         for _, fobj in getmembers(obj, isfunction):
             if fobj.__name__ in  obj.__dict__:
                 function_type = obj.__dict__[fobj.__name__].__class__.__name__
-                yield DocFunction(fobj, function_type)
+                yield cls(fobj, function_type)
 
 
 class DocClass:
@@ -75,7 +75,7 @@ class DocClass:
     def extract_from_module(cls, module: types.ModuleType) -> List['DocClass']:
         for _, obj in getmembers(module, isclass):
             if obj.__module__ == module.__name__:
-                yield DocClass(obj)
+                yield cls(obj)
 
 
 class DocModule:
@@ -134,13 +134,13 @@ class DocModule:
                 variables.append((item, value))
         return variables
 
-    @staticmethod
-    def from_path(path: str, package: str, name: str = ''):
+    @classmethod
+    def from_path(cls, path: str, package: str, name: str = ''):
         old_path = sys.path[0]
         sys.path[0] = os.path.abspath(path)
         module = import_module(name, package) if name else import_module(package)
         sys.path[0] = old_path
-        return DocModule(module)
+        return cls(module)
 
 
 if __name__ == "__main__":
