@@ -36,7 +36,6 @@ class DocFunction:
 
 
 class DocClass:
-    TEST = 'hahaha'
     def __init__(self, obj: object):
         self.name = obj.__name__
         self.doc = obj.__doc__
@@ -145,7 +144,3 @@ class DocModule:
 
 if __name__ == "__main__":
     print(DocModule.from_path('./src', 'code2doc', '.doc_types'))
-    # for function in DocFunction.extract_from_module(module): 
-    #     print(function)
-    # for c in DocClass.extract_from_module(module): 
-    #     print(c)
