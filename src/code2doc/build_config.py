@@ -6,38 +6,62 @@ from .constants import PROGRAM_NAME
 from .configurer import Configuration, ConfigOption
 
 
+class Options:
+    MODULES = 'modules'
+    OUTPUT_DIRECTORY = 'output_directory'
+    IGNORE_NON_DOCUMENTED = 'ignore_non_documented'
+    GENERATE_ROOT_DIRECTORIES = 'generate_root_directories'
+    SHOW_RELATIVE_IMPORTS = 'show_relative_imports'
+    LINK_RELATIVE_IMPORTS = 'link_relative_imports'
+    SHOW_MODULE_VARIABLES = 'show_module_variables'
+    SHOW_MODULE_FUNCTIONS = 'show_module_functions'
+    SHOW_MODULE_CLASSES = 'show_module_classes'
+    SHOW_CLASS_VARIABLES = 'show_class_variables'
+    SHOW_CLASS_FUNCTIONS = 'show_class_functions'
+    SHOW_CLASSMETHODS = 'show_classmethods'
+    SHOW_STATICMETHODS = 'show_staticmethods'
+    SHOW_TYPES = 'show_types'
+    LINK_TYPES = 'link_types'
+    IGNORE_DOT = 'ignore_dot'
+    IGNORE_UNDERSCORE = 'ignore_underscore'
+    IGNORE_FILES = 'ignore_files'
+    HEADER_FILE = 'header_file'
+    FOOTER_FILE = 'footer_file'
+    BUILD_VERSION = 'build_version'
+
+
 BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
-    ConfigOption('modules', [], 'A list of files/directories to generate documentation')).add(
-    ConfigOption('output_directory', './docs', 'Output directory where markdowns will be generated')).add(
-    ConfigOption('ignore_non_documented', False, 'Ignore files that contains no top level documentation')).add(
-    ConfigOption('generate_root_directories', True, 'Generate directory for each file/module in the output directory')).add(
-    ConfigOption('show_relative_imports', True, 'Show all the relative imports in a file')).add(
-    ConfigOption('link_relative_imports', False, 'Link all the relative imports in a file')).add(
-    ConfigOption('show_module_variables', True, 'Show all the variables in a module')).add(
-    ConfigOption('show_module_functions', True, 'Show all the functions in a module')).add(
-    ConfigOption('show_module_classes', True, 'Show all the classes in a module')).add(
-    ConfigOption('show_class_variables', True, 'Show all the variables in a class')).add(
-    ConfigOption('show_class_functions', True, 'Show all the object functions in a class')).add(
-    ConfigOption('show_classmethods', True, 'Show all the classmethods of a class')).add(
-    ConfigOption('show_staticmethods', True, 'Show all the staticmethods of a class')).add(
-    ConfigOption('show_types', True, 'Show types in the function signature')).add(
-    ConfigOption('link_types', False, 'Link types in the function signature')).add(
-    ConfigOption('ignore_dot', True, 'Ignore all the files starting with a dot (hidden files)')).add(
-    ConfigOption('ignore_underscore', True, 'Ignore all the files starting with an underscore')).add(
-    ConfigOption('ignore_files', [], 'Ignore the specified file(s)')).add(
-    ConfigOption('header_file', '', 'Append all the markdown with this in the beginning')).add(
-    ConfigOption('footer_file', '', 'Append all the markdown with this in the end')).add(
-    ConfigOption('build_version', True, 'Write build utility version at the end of markdown'))
+    ConfigOption(Options.MODULES, [], 'A list of files/directories to generate documentation')).add(
+    ConfigOption(Options.OUTPUT_DIRECTORY, './docs', 'Output directory where markdowns will be generated')).add(
+    ConfigOption(Options.IGNORE_NON_DOCUMENTED, False, 'Ignore files that contains no top level documentation')).add(
+    ConfigOption(Options.GENERATE_ROOT_DIRECTORIES, True, 'Generate directory for each file/module in the output directory')).add(
+    ConfigOption(Options.SHOW_RELATIVE_IMPORTS, True, 'Show all the relative imports in a file')).add(
+    ConfigOption(Options.LINK_RELATIVE_IMPORTS, False, 'Link all the relative imports in a file')).add(
+    ConfigOption(Options.SHOW_MODULE_VARIABLES, True, 'Show all the variables in a module')).add(
+    ConfigOption(Options.SHOW_MODULE_FUNCTIONS, True, 'Show all the functions in a module')).add(
+    ConfigOption(Options.SHOW_MODULE_CLASSES, True, 'Show all the classes in a module')).add(
+    ConfigOption(Options.SHOW_CLASS_VARIABLES, True, 'Show all the variables in a class')).add(
+    ConfigOption(Options.SHOW_CLASS_FUNCTIONS, True, 'Show all the object functions in a class')).add(
+    ConfigOption(Options.SHOW_CLASSMETHODS, True, 'Show all the classmethods of a class')).add(
+    ConfigOption(Options.SHOW_STATICMETHODS, True, 'Show all the staticmethods of a class')).add(
+    ConfigOption(Options.SHOW_TYPES, True, 'Show types in the function signature')).add(
+    ConfigOption(Options.LINK_TYPES, False, 'Link types in the function signature')).add(
+    ConfigOption(Options.IGNORE_DOT, True, 'Ignore all the files starting with a dot (hidden files)')).add(
+    ConfigOption(Options.IGNORE_UNDERSCORE, True, 'Ignore all the files starting with an underscore')).add(
+    ConfigOption(Options.IGNORE_FILES, [], 'Ignore the specified file(s)')).add(
+    ConfigOption(Options.HEADER_FILE, '', 'Append all the markdown with this in the beginning')).add(
+    ConfigOption(Options.FOOTER_FILE, '', 'Append all the markdown with this in the end')).add(
+    ConfigOption(Options.BUILD_VERSION, True, 'Write build utility version at the end of markdown'))
 
 
-import os
-import argparse
+# import os
+# import argparse
 
 if __name__ == "__main__":
-    # print(DEFAULT_CONFIG)
-    parser = argparse.ArgumentParser(prog='Test', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    BUILD_CONFIG.add_arguments(parser)
-    parser.print_help()
+    print(BUILD_CONFIG)
+    # parser = argparse.ArgumentParser(prog='Test', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    # BUILD_CONFIG.add_arguments(parser)
+    # parser.print_help()
     # fname = os.path.join(os.path.dirname(__file__), 'default.ini')
     # BUILD_CONFIG.save(fname)
     # BUILD_CONFIG.load(fname)
