@@ -10,6 +10,7 @@ from glob import glob
 import json
 from .doc_types import DocModule
 from .build_config import Options
+from .constants import README, OUTPUT_EXT
 
 
 class DocNode:
@@ -23,8 +24,8 @@ class DocNode:
         if ''.join(name):
             self.target = os.path.join(self.target, os.path.sep.join(name))
         if not is_file:
-            self.target = os.path.join(self.target, 'ReadMe')
-        self.target += '.md'
+            self.target = os.path.join(self.target, README)
+        self.target += OUTPUT_EXT
         self.children = []
 
     def add(self, node):
