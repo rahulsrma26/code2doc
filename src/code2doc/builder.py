@@ -9,12 +9,12 @@ import sys
 from glob import glob
 import json
 from .doc_types import DocModule
-from .build_config import Options
+from .build_config import Options, Configuration
 from .constants import README, OUTPUT_EXT
 
 
 class DocNode:
-    def __init__(self, path: str, name: list, is_file: bool, package: str, config: dict):
+    def __init__(self, path: str, name: list, is_file: bool, package: str, config: Configuration):
         self.name = name
         self.package = package
         import_string = '.' + '.'.join(name)
@@ -42,7 +42,7 @@ class DocNode:
 
 class DocBuilder:
     ''' Document Extractor class '''
-    def __init__(self, module_path, config):
+    def __init__(self, module_path: str, config: Configuration):
         ''' constructor '''
         self.path = module_path
         self.config = config
@@ -52,7 +52,7 @@ class DocBuilder:
         print(self.abspath, self.basedir, self.package)
         self.tree = self.build_tree(self.abspath)
 
-    def filter(self, name):
+    def filter(self, name: str) -> bool:
         if self.config[Options.IGNORE_DOT] and name.startswith('.'):
             return False
         if self.config[Options.IGNORE_UNDERSCORE] and name.startswith('_'):
