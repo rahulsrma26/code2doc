@@ -5,7 +5,7 @@ form the Docstrings.
 
 import os
 from .constants import PROGRAM_NAME, VERSION
-from . import build_config
+from .build_config import BUILD_CONFIG, Options
 from argparse import ArgumentParser, RawTextHelpFormatter
 
 
@@ -15,7 +15,7 @@ def main():
         description=f'Version {VERSION}\n' + __doc__,
         formatter_class=RawTextHelpFormatter,
         epilog='Check out individual command\'s help using code2doc <command> -h\n')
-    
+
     subparser = parser.add_subparsers(
         title='commands',
         description='''Usage: code2doc <command> [command-options]\n\nWhere <command> can be one of them:''')
@@ -32,7 +32,7 @@ def main():
         description=build.__doc__,
         formatter_class=RawTextHelpFormatter,
         help='builds the markdown documentation')
-    build_config.BUILD_CONFIG.add_arguments(build_parser)
+    BUILD_CONFIG.add_arguments(build_parser)
     build_parser.set_defaults(func=build)
 
     clean_parser = subparser.add_parser(
@@ -55,22 +55,22 @@ def get_config_path():
 
 
 def init(args):
-    build_config.BUILD_CONFIG.save(get_config_path())
+    BUILD_CONFIG.save(get_config_path())
 
 
 def clean(args):
-    config = build_config.BUILD_CONFIG
+    config = BUILD_CONFIG
     config.load(get_config_path())
-    print(config['output_directory'].value)
+    print(config[Options.OUTPUT_DIRECTORY].value)
 
 
 def build(args):
     '''
-    Build the docs by generating markdown files. Options can be passed 
+    Build the docs by generating markdown files. Options can be passed
     via command-line args or by code2doc.ini file. Preference is:
-    comman-line args > code2doc.ini > default command-line args 
+    comman-line args > code2doc.ini > default command-line args
     '''
-    config = build_config.BUILD_CONFIG
+    config = BUILD_CONFIG
     config.load(get_config_path())
     config.parse(args)
     print(config)
