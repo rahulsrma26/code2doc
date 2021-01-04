@@ -4,7 +4,7 @@ form the Docstrings.
 '''
 
 import os
-from .constants import PROGRAM_NAME, VERSION
+from .constants import PROGRAM_NAME, VERSION, DEFAULT_CONFIG_FILENAME
 from .build_config import BUILD_CONFIG, Options
 from argparse import ArgumentParser, RawTextHelpFormatter
 
@@ -24,7 +24,7 @@ def main():
         'init',
         description=init.__doc__,
         formatter_class=RawTextHelpFormatter,
-        help='create or override the default config file (code2doc.ini)')
+        help=f'create or override the default config file ({DEFAULT_CONFIG_FILENAME})')
     init_parser.set_defaults(func=init)
 
     build_parser = subparser.add_parser(
@@ -51,7 +51,7 @@ def main():
 
 def get_config_path():
     cwd = os.getcwd()
-    return os.path.join(cwd, 'code2doc.ini')
+    return os.path.join(cwd, DEFAULT_CONFIG_FILENAME)
 
 
 def init(args):
