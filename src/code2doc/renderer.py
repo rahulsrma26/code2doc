@@ -5,7 +5,6 @@ Responsible for Rendering the markdown files.
 '''
 
 import os
-import sys
 from glob import glob
 from typing import Tuple, List
 from .constants import README, OUTPUT_EXT
@@ -25,10 +24,12 @@ class MdRenderer:
 
     def render(self, node: DocNode):
         path = os.path.join(self.out_dir, node.target)
+        dir_name = os.path.dirname(path)
+        os.makedirs(dir_name, exist_ok=True)
         print('rendering', path)
         with open(path, 'w') as f:
             f.write(self.header)
-            if node.module:
+            if node.module.doc:
                 f.write(node.module.doc)
             f.write(self.get_substructure(node))
             f.write(self.footer)
