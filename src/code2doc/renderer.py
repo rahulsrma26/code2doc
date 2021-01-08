@@ -7,12 +7,12 @@ Responsible for Rendering the markdown files.
 import os
 import sys
 from glob import glob
-import json
 from typing import Tuple, List
 from .constants import README, OUTPUT_EXT
 from .builder import DocNode
 from .build_config import Configuration, Options
 from .utils import read_file
+
 
 class MdRenderer:
     ''' Markdown renderer class '''
@@ -30,7 +30,35 @@ class MdRenderer:
             f.write(self.header)
             if node.module:
                 f.write(node.module.doc)
+            f.write(self.get_substructure(node))
             f.write(self.footer)
+
+    def get_files_and_folders(self, node: DocNode) -> Tuple[List, List]:
+        files, folders = [], []
+        for child in node.children:
+            if child.is_file:
+                files.append((child.name, child))
+            else:
+                folders.append((child.name, child))
+        return sorted(files), sorted(folders)
+
+    def get_link(self, node: DocNode) -> str:
+        name = node.name[-1]
+        if node.is_file:
+            return f'[{name}]({name}{OUTPUT_EXT})'
+        else:
+            return f'[{name}]({name}/{README}{OUTPUT_EXT})'
+
+    def get_substructure(self, node: DocNode) -> str:
+        files, folders = self.get_files_and_folders(node)
+        s = ''
+        if folders:
+            rows = '\n'.join(['* ' + self.get_link(x[1]) for x in folders])
+            s += f'\nFolders: \n{rows}\n'
+        if files:
+            rows = '\n'.join(['* ' + self.get_link(x[1]) for x in files])
+            s += f'\nFiles: \n{rows}\n'
+        return s
 
 
 from .builder import DocBuilder
