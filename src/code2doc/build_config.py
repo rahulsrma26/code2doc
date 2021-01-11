@@ -18,8 +18,8 @@ class Options:
     SHOW_MODULE_CLASSES = 'show_module_classes'
     SHOW_CLASS_VARIABLES = 'show_class_variables'
     SHOW_CLASS_FUNCTIONS = 'show_class_functions'
-    SHOW_CLASSMETHODS = 'show_classmethods'
-    SHOW_STATICMETHODS = 'show_staticmethods'
+    SHOW_CLASS_CLASSMETHODS = 'show_class_classmethods'
+    SHOW_CLASS_STATICMETHODS = 'show_class_staticmethods'
     SHOW_TYPES = 'show_types'
     LINK_TYPES = 'link_types'
     IGNORE_DOT = 'ignore_dot'
@@ -40,10 +40,10 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.SHOW_MODULE_VARIABLES, True, 'Show all the variables in a module')).add(
     ConfigOption(Options.SHOW_MODULE_FUNCTIONS, True, 'Show all the functions in a module')).add(
     ConfigOption(Options.SHOW_MODULE_CLASSES, True, 'Show all the classes in a module')).add(
-    ConfigOption(Options.SHOW_CLASS_VARIABLES, True, 'Show all the variables in a class')).add(
+    ConfigOption(Options.SHOW_CLASS_VARIABLES, True, 'Show all the static variables in a class')).add(
     ConfigOption(Options.SHOW_CLASS_FUNCTIONS, True, 'Show all the object functions in a class')).add(
-    ConfigOption(Options.SHOW_CLASSMETHODS, True, 'Show all the classmethods of a class')).add(
-    ConfigOption(Options.SHOW_STATICMETHODS, True, 'Show all the staticmethods of a class')).add(
+    ConfigOption(Options.SHOW_CLASS_CLASSMETHODS, True, 'Show all the classmethods of a class')).add(
+    ConfigOption(Options.SHOW_CLASS_STATICMETHODS, True, 'Show all the staticmethods of a class')).add(
     ConfigOption(Options.SHOW_TYPES, True, 'Show types in the function signature')).add(
     ConfigOption(Options.LINK_TYPES, False, 'Link types in the function signature')).add(
     ConfigOption(Options.IGNORE_DOT, True, 'Ignore all the files starting with a dot (hidden files)')).add(
