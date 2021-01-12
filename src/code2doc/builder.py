@@ -53,9 +53,9 @@ class DocBuilder:
         self.tree = self.build_tree(self.abspath)
 
     def filter(self, name: str) -> bool:
-        if self.config[Options.IGNORE_DOT] and name.startswith('.'):
+        if self.config[Options.IGNORE_DOT_FILES] and name.startswith('.'):
             return False
-        if self.config[Options.IGNORE_UNDERSCORE] and name.startswith('_'):
+        if self.config[Options.IGNORE_UNDERSCORE_FILES] and name.startswith('_'):
             return False
         return True
 
