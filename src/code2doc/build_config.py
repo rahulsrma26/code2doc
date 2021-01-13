@@ -46,8 +46,8 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.SHOW_CLASS_STATICMETHODS, True, 'Show all the staticmethods of a class')).add(
     ConfigOption(Options.SHOW_TYPES, True, 'Show types in the function signature')).add(
     ConfigOption(Options.LINK_TYPES, False, 'Link types in the function signature')).add(
-    ConfigOption(Options.IGNORE_DOT, True, 'Ignore all the files starting with a dot (hidden files)')).add(
-    ConfigOption(Options.IGNORE_UNDERSCORE, True, 'Ignore all the files starting with an underscore')).add(
+    ConfigOption(Options.IGNORE_DOT_FILES, True, 'Ignore all the files starting with a dot (hidden files)')).add(
+    ConfigOption(Options.IGNORE_UNDERSCORE_FILES, True, 'Ignore all the files starting with an underscore')).add(
     ConfigOption(Options.IGNORE_FILES, [], 'Ignore the specified file(s)')).add(
     ConfigOption(Options.HEADER_FILE, '', 'Append all the markdown with this in the beginning')).add(
     ConfigOption(Options.FOOTER_FILE, '', 'Append all the markdown with this in the end')).add(
