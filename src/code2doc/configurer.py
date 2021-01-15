@@ -25,12 +25,12 @@ class ConfigOption:
 
     def add_argument(self, parser):
         short, full = f'-{self.short}', f'--{self.full}'
-        if isinstance(self.value, bool): 
+        if isinstance(self.value, bool):
             if self.value is True:
                 parser.add_argument(short, full, action='store_false', help=self.doc)
             else:
                 parser.add_argument(short, full, action='store_true', default=False, help=self.doc)
-        elif isinstance(self.value, list): 
+        elif isinstance(self.value, list):
             parser.add_argument(short, full, action='append', help=self.doc)
         else:
             parser.add_argument(short, full, default=self.value, help=self.doc)
@@ -61,13 +61,13 @@ class Configuration:
     def add_arguments(self, parser):
         for option in self.options:
             option.add_argument(parser)
-            
+
     def save(self, fname):
         config = configparser.ConfigParser(allow_no_value=True)
         config.add_section(self.name)
         for option in self.options:
             config.set(self.name, '; ' + option.doc)
-            if isinstance(option.value, str): 
+            if isinstance(option.value, str):
                 config.set(self.name, option.full, repr(option.value))
             else:
                 config.set(self.name, option.full, str(option.value))
