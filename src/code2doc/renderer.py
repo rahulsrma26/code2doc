@@ -31,6 +31,7 @@ class MdRenderer:
             f.write(self.header)
             if node.module.doc:
                 f.write(node.module.doc)
+            f.write(self.get_module(node))
             f.write(self.get_substructure(node))
             f.write(self.footer)
 
@@ -60,6 +61,9 @@ class MdRenderer:
             rows = '\n'.join(['* ' + self.get_link(x[1]) for x in files])
             s += f'\nFiles: \n{rows}\n'
         return s
+
+    def get_module(self, node: DocNode) -> str:
+        return '```' + str(node.module) + '```'
 
 
 from .builder import DocBuilder
