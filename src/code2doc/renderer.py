@@ -31,8 +31,9 @@ class MdRenderer:
             f.write(self.header)
             if node.module.doc:
                 f.write(node.module.doc)
-            f.write(self.get_module(node))
+                f.write('---')
             f.write(self.get_substructure(node))
+            f.write(self.get_module(node))
             f.write(self.footer)
 
     def get_files_and_folders(self, node: DocNode) -> Tuple[List, List]:
