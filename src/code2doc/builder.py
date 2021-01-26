@@ -5,9 +5,7 @@ Responsible for Extracting functions and classes from the source.
 '''
 
 import os
-import sys
 from glob import glob
-import json
 from .doc_types import DocModule
 from .build_config import Options, Configuration
 from .constants import README, OUTPUT_EXT
