@@ -1,5 +1,7 @@
 '''
-Default config options for build i.e. default values for `code2doc.ini`.
+Default options for building the docs. Same options are used for both 
+the `code2doc.ini` file as well as the command line arguments for the 
+build command.
 '''
 
 from .constants import PROGRAM_NAME
@@ -7,6 +9,9 @@ from .configurer import Configuration, ConfigOption
 
 
 class Options:
+    '''
+    Defines the string constants for the config options.
+    '''
     MODULES = 'modules'
     OUTPUT_DIRECTORY = 'output_directory'
     IGNORE_NON_DOCUMENTED = 'ignore_non_documented'
@@ -54,15 +59,5 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.BUILD_VERSION, True, 'Write build utility version at the end of markdown'))
 
 
-# import os
-# import argparse
-
 if __name__ == "__main__":
     print(BUILD_CONFIG)
-    # parser = argparse.ArgumentParser(prog='Test', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    # BUILD_CONFIG.add_arguments(parser)
-    # parser.print_help()
-    # fname = os.path.join(os.path.dirname(__file__), 'default.ini')
-    # BUILD_CONFIG.save(fname)
-    # BUILD_CONFIG.load(fname)
-    # print(DEFAULT_CONFIG)
