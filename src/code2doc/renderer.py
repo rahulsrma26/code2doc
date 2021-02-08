@@ -10,6 +10,7 @@ from typing import Tuple, List
 from .constants import README, OUTPUT_EXT
 from .builder import DocNode
 from .build_config import Configuration, Options
+from .doc_types import DocModule
 from .utils import read_file
 
 
@@ -31,9 +32,9 @@ class MdRenderer:
             f.write(self.header)
             if node.module.doc:
                 f.write(node.module.doc)
-                f.write('---')
+                f.write('\n---\n')
             f.write(self.get_substructure(node))
-            f.write(self.get_module(node))
+            f.write(self.get_module_elements(node))
             f.write(self.footer)
 
     def get_files_and_folders(self, node: DocNode) -> Tuple[List, List]:
@@ -63,8 +64,18 @@ class MdRenderer:
             s += f'\nFiles: \n{rows}\n'
         return s
 
-    def get_module(self, node: DocNode) -> str:
-        return '```' + str(node.module) + '```'
+    def get_module_function_list(self, module: DocModule) -> str:
+        if not module.functions:
+            return ''
+        s = 'Functions: \n'
+        for func in module.functions:
+            s += f'* [{func.name} {func.signature}](#{func.name}) \n'
+        return s
+
+    def get_module_elements(self, node: DocNode) -> str:
+        s = ''
+        s += self.get_module_function_list(node.module)
+        return s + '```' + str(node.module) + '```'
 
 
 from .builder import DocBuilder
