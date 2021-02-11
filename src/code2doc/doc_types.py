@@ -3,7 +3,7 @@ import sys
 import ast
 from typing import List, Tuple
 from collections.abc import Callable
-from inspect import signature, getfullargspec, getmembers, isfunction, isclass, ismethod, ismodule
+from inspect import signature, getmembers, isfunction, isclass, ismethod
 from importlib import import_module, types
 
 
@@ -103,6 +103,15 @@ class DocModule:
                 s += f'{lines}\n'
         return s
 
+    def get_import_group(self) -> dict:
+        imports = {}
+        for k, v in self.imports.items():
+            if v in imports:
+                imports[v].append(k)
+            else:
+                imports[v] = [k]
+        return imports
+
     @staticmethod
     def get_imports(module: types.ModuleType) -> dict:
         names = {}
@@ -110,6 +119,7 @@ class DocModule:
             print(f'Info: Module "{module.__name__}" doesn\'t have an __init__ file. '
                 'Module level documentation can be added in the __init__ file.')
             return names
+        # members = getmembers(module)
         with open(module.__file__) as fh:
             root = ast.parse(fh.read(), module.__file__)
             for node in ast.iter_child_nodes(root):
