@@ -1,5 +1,5 @@
 '''
-# Extractor module
+# Renderer module
 
 Responsible for Rendering the markdown files.
 '''
@@ -64,10 +64,22 @@ class MdRenderer:
             s += f'\nFiles: \n{rows}\n'
         return s
 
+    def get_module_import_list(self, module: DocModule) -> str:
+        if not module.imports:
+            return ''
+        s = '\nDependencies: \n'
+        for k, v in module.get_import_group().items():
+            if not k:
+                for i in v:
+                    s += f'* import {i} \n'
+            else:
+                s += f'* from {k} import {", ".join(v)} \n'
+        return s
+
     def get_module_function_list(self, module: DocModule) -> str:
         if not module.functions:
             return ''
-        s = 'Functions: \n'
+        s = '\nFunctions: \n'
         for func in module.functions:
             s += f'* [{func.name} {func.signature}](#{func.name}) \n'
         return s
@@ -75,7 +87,7 @@ class MdRenderer:
     def get_module_class_list(self, module: DocModule) -> str:
         if not module.classes:
             return ''
-        s = 'Classes: \n'
+        s = '\nClasses: \n'
         for cls in module.classes:
             base = ' ({cls.base.__name__})' if cls.base else ''
             s += f'* [{cls.name}{base}](#{cls.name}) \n'
@@ -83,6 +95,7 @@ class MdRenderer:
 
     def get_module_elements(self, node: DocNode) -> str:
         s = ''
+        s += self.get_module_import_list(node.module)
         s += self.get_module_function_list(node.module)
         s += self.get_module_class_list(node.module)
         return s + '```' + str(node.module) + '```'
