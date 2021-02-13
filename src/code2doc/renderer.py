@@ -74,6 +74,7 @@ class MdRenderer:
                     s += f'* import {i} \n'
             else:
                 s += f'* from {k} import {", ".join(v)} \n'
+        s += '---\n'
         return s
 
     def get_module_function_list(self, module: DocModule) -> str:
@@ -82,6 +83,7 @@ class MdRenderer:
         s = '\nFunctions: \n'
         for func in module.functions:
             s += f'* [{func.name} {func.signature}](#{func.name}) \n'
+        s += '---\n'
         return s
 
     def get_module_class_list(self, module: DocModule) -> str:
@@ -91,6 +93,7 @@ class MdRenderer:
         for cls in module.classes:
             base = ' ({cls.base.__name__})' if cls.base else ''
             s += f'* [{cls.name}{base}](#{cls.name}) \n'
+        s += '---\n'
         return s
 
     def get_module_elements(self, node: DocNode) -> str:
