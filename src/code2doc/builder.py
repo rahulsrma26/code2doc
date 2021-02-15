@@ -51,9 +51,10 @@ class DocBuilder:
         self.tree = self.build_tree(self.abspath)
 
     def filter(self, name: str) -> bool:
-        if self.config[Options.IGNORE_DOT_FILES] and name.startswith('.'):
+        filename = name.split(os.path.sep)[-1]
+        if self.config[Options.IGNORE_DOT_FILES] and filename.startswith('.'):
             return False
-        if self.config[Options.IGNORE_UNDERSCORE_FILES] and name.startswith('_'):
+        if self.config[Options.IGNORE_UNDERSCORE_FILES] and filename.startswith('_'):
             return False
         return True
 
@@ -72,8 +73,8 @@ class DocBuilder:
                 root = DocNode(
                     path=self.basedir, name=name,
                     is_file=False, package=self.package, config=self.config)
-                for fname in os.listdir(path):
-                    filepath = os.path.join(path, fname)
+                for filename in os.listdir(path):
+                    filepath = os.path.join(path, filename)
                     root.add(self.build_tree(filepath))
                 return root
 

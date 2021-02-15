@@ -8,7 +8,7 @@ import os
 
 from .build_config import Configuration, Options
 from .builder import DocBuilder, DocNode
-from .renderer import MdRenderer
+from .renderer.renderer import MdRenderer
 
 
 class Generator:

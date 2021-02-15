@@ -7,11 +7,11 @@ Responsible for Rendering the markdown files.
 import os
 from glob import glob
 from typing import Tuple, List
-from .constants import README, OUTPUT_EXT
-from .builder import DocNode
-from .build_config import Configuration, Options
-from .doc_types import DocModule
-from .utils import read_file
+from ..constants import README, OUTPUT_EXT
+from ..builder import DocNode
+from ..build_config import Configuration, Options
+from ..doc_types import DocModule
+from ..utils import read_file
 
 
 class MdRenderer:
@@ -102,8 +102,8 @@ class MdRenderer:
         return s + '```' + str(node.module) + '```'
 
 
-from .builder import DocBuilder
-from .build_config import BUILD_CONFIG
+from ..builder import DocBuilder
+from ..build_config import BUILD_CONFIG
 
 if __name__ == "__main__":
     this_dir = os.path.dirname(__file__)
