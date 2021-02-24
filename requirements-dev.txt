@@ -1,0 +1,6 @@
+bump2version
+twine
+check-manifest
+pytest
+coverage
+tox
