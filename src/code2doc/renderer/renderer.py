@@ -30,6 +30,7 @@ class MdRenderer:
         print('rendering', path)
         with open(path, 'w') as f:
             f.write(self.header)
+            f.write(f'# {".".join(node.name)} \n')
             if node.module.doc:
                 f.write(node.module.doc)
                 f.write('\n---\n')
