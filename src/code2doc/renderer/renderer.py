@@ -1,5 +1,5 @@
 '''
-# Renderer module
+## Renderer module
 
 Responsible for Rendering the markdown files.
 '''
@@ -12,6 +12,8 @@ from ..builder import DocNode
 from ..build_config import Configuration, Options
 from ..doc_types import DocModule
 from ..utils import read_file
+from .class_renderer import ClassRenderer
+from .function_renderer import FunctionRenderer
 
 
 class MdRenderer:
@@ -22,6 +24,8 @@ class MdRenderer:
         self.header = read_file(config[Options.HEADER_FILE].value)
         self.footer = read_file(config[Options.FOOTER_FILE].value)
         self.out_dir = config[Options.OUTPUT_DIRECTORY].value
+        self.class_renderer = ClassRenderer(config)
+        self.function_renderer = FunctionRenderer(config)
 
     def render(self, node: DocNode):
         path = os.path.join(self.out_dir, node.target)
@@ -82,7 +86,7 @@ class MdRenderer:
             return ''
         s = '\nFunctions: \n'
         for func in module.functions:
-            s += f'* [{func.name} {func.signature}](#{func.name}) \n'
+            s += f'* {self.function_renderer.link(func)} \n'
         return s
 
     def get_module_class_list(self, module: DocModule) -> str:
@@ -90,8 +94,7 @@ class MdRenderer:
             return ''
         s = '\nClasses: \n'
         for cls in module.classes:
-            base = ' ({cls.base.__name__})' if cls.base else ''
-            s += f'* [{cls.name}{base}](#{cls.name}) \n'
+            s += f'* {self.class_renderer.link(cls)} \n'
         return s
 
     def get_module_elements(self, node: DocNode) -> str:
@@ -100,6 +103,10 @@ class MdRenderer:
         s += self.get_module_function_list(node.module)
         s += self.get_module_class_list(node.module)
         s += '---\n'
+        for func in node.module.functions:
+            s += self.function_renderer.render(func)
+        for cls in node.module.classes:
+            s += self.class_renderer.render(cls)
         return s + '```' + str(node.module) + '```'
 
 
