@@ -1,5 +1,5 @@
 '''
-# Generator module
+## Generator module
 
 Responsible for generating the documents.
 '''
