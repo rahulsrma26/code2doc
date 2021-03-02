@@ -55,6 +55,9 @@ def get_config_path():
 
 
 def init(args):
+    '''
+    This will create default code2doc.ini file in the PWD.
+    '''
     BUILD_CONFIG.save(get_config_path())
 
 

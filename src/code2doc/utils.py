@@ -1,3 +1,9 @@
+'''
+## Utility module
+
+Contains different common helper functions.
+'''
+
 import os
 
 def read_file(path: str) -> str:
