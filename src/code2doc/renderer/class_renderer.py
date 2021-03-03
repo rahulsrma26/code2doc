@@ -23,4 +23,9 @@ class ClassRenderer:
         s = '\n'
         s += f'## {cls.name} {base} \n'
         s += f'{cls.doc} \n'
+        if cls.classmethods:
+            s += f'\nClassmethods \n'
+            for obj in cls.classmethods:
+                s += f'* {obj.name} {obj.signature} \n'
+                s += f'{obj.doc} \n'
         return s
