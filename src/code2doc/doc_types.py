@@ -1,7 +1,8 @@
 import os
 import sys
 import ast
-from typing import List, Tuple
+from typing import Dict, List, Tuple
+from collections import defaultdict
 from collections.abc import Callable
 from inspect import signature, getmembers, isfunction, isclass, ismethod
 from importlib import import_module, types
@@ -23,16 +24,24 @@ class DocFunction:
 
     @classmethod
     def extract_from_module(cls, module: types.ModuleType) -> List['DocFunction']:
+        '''
+        Extract all the functions form the module object.
+        '''
         for _, obj in getmembers(module, isfunction):
             if obj.__module__ == module.__name__:
                 yield cls(obj)
 
     @classmethod
-    def extract_from_class(cls, obj: object) -> List['DocFunction']:
+    def extract_from_class(cls, obj: object) -> Dict[str, 'DocFunction']:
+        '''
+        Extract all the functions form the class object.
+        '''
+        functions = defaultdict(list)
         for _, fobj in getmembers(obj, isfunction):
             if fobj.__name__ in  obj.__dict__:
                 function_type = obj.__dict__[fobj.__name__].__class__.__name__
-                yield cls(fobj, function_type)
+                functions[function_type].append(cls(fobj, function_type))
+        return functions
 
 
 class DocClass:
@@ -40,8 +49,9 @@ class DocClass:
         self.name = obj.__name__
         self.doc = obj.__doc__
         self.base = obj.__base__ if str(obj.__base__) != str(object) else None
-        self.statics, self.classmethods = self.get_static_members(obj)
         self.methods = DocFunction.extract_from_class(obj)
+        self.statics, classmethods = self.get_static_members(obj)
+        self.methods['classmethod'] = classmethods
         self.signature = signature(obj)
         # self.spec = getfullargspec(obj)
 
@@ -62,12 +72,8 @@ class DocClass:
         statics = '\n'.join([f'\t{k} = {v}' for k, v in self.statics])
         if statics:
             items.append(statics)
-        methods = '\n'.join([f'\t{f}' for f in self.methods])
-        if methods:
-            items.append(methods)
-        classmethods = '\n'.join([f'\t{f}' for f in self.classmethods])
-        if classmethods:
-            items.append(classmethods)
+        for _, methods in self.methods.items():
+            items.append('\n'.join([f'\t{f}' for f in methods]))
         return '\n'.join(items)
 
     @classmethod
