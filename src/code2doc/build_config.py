@@ -33,6 +33,7 @@ class Options:
     HEADER_FILE = 'header_file'
     FOOTER_FILE = 'footer_file'
     BUILD_VERSION = 'build_version'
+    REINDENT_DOCS = 'reindent_docs'
 
 
 BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
@@ -56,7 +57,8 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.IGNORE_FILES, [], 'Ignore the specified file(s)')).add(
     ConfigOption(Options.HEADER_FILE, '', 'Append all the markdown with this in the beginning')).add(
     ConfigOption(Options.FOOTER_FILE, '', 'Append all the markdown with this in the end')).add(
-    ConfigOption(Options.BUILD_VERSION, True, 'Write build utility version at the end of markdown'))
+    ConfigOption(Options.BUILD_VERSION, True, 'Write build utility version at the end of markdown')).add(
+    ConfigOption(Options.REINDENT_DOCS, True, 'Reindent the docs to avoid top level markdown blocks'))
 
 
 if __name__ == "__main__":

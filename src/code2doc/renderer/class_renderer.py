@@ -6,6 +6,7 @@ Responsible for Rendering the class docs in markdown file.
 
 from ..build_config import Configuration, Options
 from ..doc_types import DocClass
+from ..utils import reindent
 
 
 class ClassRenderer:
@@ -29,5 +30,6 @@ class ClassRenderer:
                 name = obj.name.replace("_", "\\_")
                 s += f'* **{name}** {obj.signature} \n'
                 if obj.doc:
-                    s += f'{obj.doc} \n'
+                    doc = reindent(obj.doc, 4) if self.config[Options.REINDENT_DOCS] else obj.doc
+                    s += f'{doc} \n'
         return s

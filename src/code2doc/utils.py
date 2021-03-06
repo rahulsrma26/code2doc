@@ -17,7 +17,7 @@ def read_file(path: str) -> str:
         return ''
 
 
-def reindent(s: str) -> str:
+def reindent(s: str, min_spaces: int = 0) -> str:
     '''
     This reindents a string by keeping only the minimum level of indentation.
     '''
@@ -28,4 +28,5 @@ def reindent(s: str) -> str:
             m = min(m, indent) if m else indent
     if m:
         lines = [l if l.isspace() else l[indent:] for l in lines]
-        return ''.join(lines)
+        prefix = ' ' * min_spaces
+        return ''.join([prefix + l for l in lines])
