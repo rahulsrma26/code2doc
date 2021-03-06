@@ -26,7 +26,8 @@ class ClassRenderer:
         for method_type, methods in cls.methods.items():
             s += f'\n{method_type}s: \n'
             for obj in methods:
-                s += f'* {obj.name} {obj.signature} \n'
+                name = obj.name.replace("_", "\\_")
+                s += f'* **{name}** {obj.signature} \n'
                 if obj.doc:
                     s += f'{obj.doc} \n'
         return s
