@@ -6,6 +6,7 @@ Responsible for Rendering the function docs in markdown file.
 
 from ..build_config import Configuration, Options
 from ..doc_types import DocFunction
+from ..utils import reindent
 
 
 class FunctionRenderer:
@@ -20,5 +21,7 @@ class FunctionRenderer:
     def render(self, func: DocFunction) -> str:
         s = '\n'
         s += f'## {func.name} {func.signature} \n'
-        s += f'{func.doc} \n'
+        if func.doc:
+            doc = reindent(func.doc) if self.config[Options.REINDENT_DOCS] else func.doc
+            s += f'{doc} \n'
         return s
