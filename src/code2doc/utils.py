@@ -27,6 +27,6 @@ def reindent(s: str, min_spaces: int = 0) -> str:
             indent = len(line) - len(line.lstrip())
             m = min(m, indent) if m else indent
     if m:
-        lines = [l if l.isspace() else l[indent:] for l in lines]
+        lines = [l if l.isspace() else l[m:] for l in lines]
         prefix = ' ' * min_spaces
         return ''.join([prefix + l for l in lines])
