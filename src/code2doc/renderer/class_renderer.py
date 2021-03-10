@@ -23,7 +23,8 @@ class ClassRenderer:
         base = ' ({cls.base.__name__})' if cls.base else ''
         s = '\n'
         s += f'## {cls.name} {base} \n'
-        s += f'{cls.doc} \n'
+        if cls.doc:
+            s += f'{cls.doc} \n'
         for method_type, methods in cls.methods.items():
             s += f'\n{method_type}s: \n'
             for obj in methods:
