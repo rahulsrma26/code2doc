@@ -99,7 +99,7 @@ class MdRenderer:
 
     def br(self) -> str:
         if self.config[Options.ADD_COMPONENT_LINEBREAKS]:
-            return '---\n'
+            return '\n---\n'
         return ''
 
     def get_module_elements(self, node: DocNode) -> str:
