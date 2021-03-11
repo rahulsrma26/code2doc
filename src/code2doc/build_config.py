@@ -35,6 +35,7 @@ class Options:
     BUILD_VERSION = 'build_version'
     REINDENT_DOCS = 'reindent_docs'
     ADD_COMPONENT_LINEBREAKS = 'add_component_linebreaks'
+    MODULE_NAME_HEADING = 'module_name_heading'
 
 
 BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
@@ -60,7 +61,8 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.FOOTER_FILE, '', 'Append all the markdown with this in the end')).add(
     ConfigOption(Options.BUILD_VERSION, True, 'Write build utility version at the end of markdown')).add(
     ConfigOption(Options.REINDENT_DOCS, True, 'Reindent the docs to avoid top level markdown blocks')).add(
-    ConfigOption(Options.ADD_COMPONENT_LINEBREAKS, True, 'Add linebreaks after every doc component'))
+    ConfigOption(Options.ADD_COMPONENT_LINEBREAKS, True, 'Add linebreaks after every doc component')).add(
+    ConfigOption(Options.MODULE_NAME_HEADING, True, 'Adds the relative module path as heading in docs.'))
 
 
 if __name__ == "__main__":

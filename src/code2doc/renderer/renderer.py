@@ -19,7 +19,9 @@ from .function_renderer import FunctionRenderer
 class MdRenderer:
     ''' Markdown renderer class '''
     def __init__(self, config: Configuration):
-        ''' constructor '''
+        '''
+        constructor
+        '''
         self.config = config
         self.header = read_file(config[Options.HEADER_FILE].value)
         self.footer = read_file(config[Options.FOOTER_FILE].value)
@@ -34,7 +36,11 @@ class MdRenderer:
         print('rendering', path)
         with open(path, 'w') as f:
             f.write(self.header)
-            f.write(f'# {".".join(node.name)} \n')
+            if self.config[Options.MODULE_NAME_HEADING]:
+                name = ".".join(node.name)
+                if not name:
+                    name = node.package
+                f.write(f'# {name} \n')
             if node.module.doc:
                 f.write(node.module.doc)
                 f.write('\n---\n')
