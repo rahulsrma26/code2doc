@@ -51,7 +51,8 @@ class DocClass:
         self.base = obj.__base__ if str(obj.__base__) != str(object) else None
         self.methods = DocFunction.extract_from_class(obj)
         self.statics, classmethods = self.get_static_members(obj)
-        self.methods['classmethod'] = classmethods
+        if classmethods:
+            self.methods['classmethod'] = classmethods
         self.signature = signature(obj)
         # self.spec = getfullargspec(obj)
 
