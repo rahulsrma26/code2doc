@@ -34,6 +34,7 @@ class Options:
     FOOTER_FILE = 'footer_file'
     BUILD_VERSION = 'build_version'
     REINDENT_DOCS = 'reindent_docs'
+    ADD_COMPONENT_LINEBREAKS = 'add_component_linebreaks'
 
 
 BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
@@ -58,7 +59,8 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.HEADER_FILE, '', 'Append all the markdown with this in the beginning')).add(
     ConfigOption(Options.FOOTER_FILE, '', 'Append all the markdown with this in the end')).add(
     ConfigOption(Options.BUILD_VERSION, True, 'Write build utility version at the end of markdown')).add(
-    ConfigOption(Options.REINDENT_DOCS, True, 'Reindent the docs to avoid top level markdown blocks'))
+    ConfigOption(Options.REINDENT_DOCS, True, 'Reindent the docs to avoid top level markdown blocks')).add(
+    ConfigOption(Options.ADD_COMPONENT_LINEBREAKS, True, 'Add linebreaks after every doc component'))
 
 
 if __name__ == "__main__":

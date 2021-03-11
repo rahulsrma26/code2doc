@@ -97,16 +97,23 @@ class MdRenderer:
             s += f'* {self.class_renderer.link(cls)} \n'
         return s
 
+    def br(self) -> str:
+        if self.config[Options.ADD_COMPONENT_LINEBREAKS]:
+            return '---\n'
+        return ''
+
     def get_module_elements(self, node: DocNode) -> str:
         s = ''
         s += self.get_module_import_list(node.module)
         s += self.get_module_function_list(node.module)
         s += self.get_module_class_list(node.module)
-        s += '---\n'
+        s += self.br()
         for func in node.module.functions:
             s += self.function_renderer.render(func)
+            s += self.br()
         for cls in node.module.classes:
             s += self.class_renderer.render(cls)
+            s += self.br()
         return s + '```' + str(node.module) + '```'
 
 
