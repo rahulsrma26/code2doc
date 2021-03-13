@@ -18,11 +18,12 @@ from .function_renderer import FunctionRenderer
 
 class MdRenderer:
     ''' Markdown renderer class '''
-    def __init__(self, config: Configuration):
+    def __init__(self, config: Configuration, rootpath: str):
         '''
         constructor
         '''
         self.config = config
+        self.rootpath = rootpath
         self.header = read_file(config[Options.HEADER_FILE].value)
         self.footer = read_file(config[Options.FOOTER_FILE].value)
         self.out_dir = config[Options.OUTPUT_DIRECTORY].value
@@ -75,11 +76,29 @@ class MdRenderer:
             s += f'\nFiles: \n{rows}\n'
         return s
 
+    def get_import_group(self, all_imports: dict) -> dict:
+        imports = {}
+        for k, (v, f) in all_imports.items():
+            if v in imports:
+                imports[v].append((k, f))
+            else:
+                imports[v] = [(k, f)]
+        filtered = {}
+        for h, i in imports.items():
+            relative, items = False, []
+            for o, f in i:
+                if self.rootpath in f:
+                    relative = True
+                items.append(o)
+            if relative:
+                filtered[h] = items
+        return filtered
+
     def get_module_import_list(self, module: DocModule) -> str:
         if not module.imports:
             return ''
         s = '\nDependencies: \n'
-        for k, v in module.get_import_group().items():
+        for k, v in self.get_import_group(module.imports).items():
             if not k:
                 for i in v:
                     s += f'* import {i} \n'

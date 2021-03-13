@@ -4,9 +4,8 @@ import ast
 from typing import Dict, List, Tuple
 from collections import defaultdict
 from collections.abc import Callable
-from inspect import signature, getmembers, isfunction, isclass, ismethod
+from inspect import signature, getmembers, getfile, getmodule, isfunction, isclass, ismethod
 from importlib import import_module, types
-
 
 class DocFunction:
     def __init__(self, obj: Callable, ftype='function'):
@@ -110,15 +109,6 @@ class DocModule:
                 s += f'{lines}\n'
         return s
 
-    def get_import_group(self) -> dict:
-        imports = {}
-        for k, v in self.imports.items():
-            if v in imports:
-                imports[v].append(k)
-            else:
-                imports[v] = [k]
-        return imports
-
     @staticmethod
     def get_imports(module: types.ModuleType) -> dict:
         names = {}
@@ -126,16 +116,26 @@ class DocModule:
             print(f'Info: Module "{module.__name__}" doesn\'t have an __init__ file. '
                 'Module level documentation can be added in the __init__ file.')
             return names
-        # members = getmembers(module)
+        members = {k:v for k, v in getmembers(module)}
         with open(module.__file__) as fh:
             root = ast.parse(fh.read(), module.__file__)
             for node in ast.iter_child_nodes(root):
                 if isinstance(node, ast.Import):
                     for n in node.names:
-                        names[n.name] = ''
+                        filepath = ''
+                        try:
+                            filepath = getfile(members[n.name])
+                        except:
+                            pass
+                        names[n.name] = ('', filepath)
                 elif isinstance(node, ast.ImportFrom):
                     for n in node.names:
-                        names[n.name] = node.module
+                        filepath = ''
+                        try:
+                            filepath = getfile(getmodule(members[n.name]))
+                        except:
+                            pass
+                        names[n.name] = (node.module, filepath)
         return names
 
     @staticmethod

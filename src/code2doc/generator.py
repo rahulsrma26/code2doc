@@ -30,8 +30,8 @@ from .build_config import BUILD_CONFIG
 
 if __name__ == "__main__":
     this_dir = os.path.dirname(__file__)
-    renderer = MdRenderer(BUILD_CONFIG)
-    print(renderer)
     builder = DocBuilder('./src/code2doc/', BUILD_CONFIG)
     print(builder.tree)
+    renderer = MdRenderer(BUILD_CONFIG, builder.abspath)
+    print(renderer)
     Generator(builder, renderer, BUILD_CONFIG)
