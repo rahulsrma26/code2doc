@@ -96,7 +96,7 @@ class MdRenderer:
 
     def get_module_import_list(self, module: DocModule) -> str:
         imports = self.get_import_group(module.imports).items()
-        if not imports:
+        if not imports or not self.config[Options.SHOW_RELATIVE_IMPORTS]:
             return ''
         s = '\nDependencies: \n'
         for k, v in imports:
@@ -108,7 +108,7 @@ class MdRenderer:
         return s
 
     def get_module_function_list(self, module: DocModule) -> str:
-        if not module.functions:
+        if not module.functions or not self.config[Options.SHOW_MODULE_FUNCTIONS]:
             return ''
         s = '\nFunctions: \n'
         for func in module.functions:
@@ -116,7 +116,7 @@ class MdRenderer:
         return s
 
     def get_module_class_list(self, module: DocModule) -> str:
-        if not module.classes:
+        if not module.classes or not self.config[Options.SHOW_MODULE_CLASSES]:
             return ''
         s = '\nClasses: \n'
         for cls in module.classes:
