@@ -95,10 +95,11 @@ class MdRenderer:
         return filtered
 
     def get_module_import_list(self, module: DocModule) -> str:
-        if not module.imports:
+        imports = self.get_import_group(module.imports).items()
+        if not imports:
             return ''
         s = '\nDependencies: \n'
-        for k, v in self.get_import_group(module.imports).items():
+        for k, v in imports:
             if not k:
                 for i in v:
                     s += f'* import {i} \n'
