@@ -25,12 +25,14 @@ class ClassRenderer:
         s += f'## {cls.name} {base} \n'
         if cls.doc:
             s += f'{cls.doc} \n'
-        for method_type, methods in cls.methods.items():
-            s += f'\n{method_type}s: \n'
-            for obj in methods:
-                name = obj.name.replace("_", "\\_")
-                s += f'* **{name}** {obj.signature} \n'
-                if obj.doc:
-                    doc = reindent(obj.doc, 4) if self.config[Options.REINDENT_DOCS] else obj.doc
-                    s += f'{doc} \n'
+        if self.config[Options.SHOW_CLASS_METHODS]:
+            for method_type, methods in cls.methods.items():
+                postfix = 's' if len(methods) > 1 else ''
+                s += f'\n{method_type}{postfix}: \n'
+                for obj in methods:
+                    name = obj.name.replace("_", "\\_")
+                    s += f'* **{name}** {obj.signature} \n'
+                    if obj.doc:
+                        doc = reindent(obj.doc, 4) if self.config[Options.REINDENT_DOCS] else obj.doc
+                        s += f'{doc} \n'
         return s
