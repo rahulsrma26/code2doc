@@ -140,7 +140,7 @@ class MdRenderer:
         for cls in node.module.classes:
             s += self.class_renderer.render(cls)
             s += self.br()
-        return s + '```' + str(node.module) + '```'
+        return s
 
 
 from ..builder import DocBuilder
