@@ -6,6 +6,9 @@ form the Docstrings.
 import os
 from .constants import PROGRAM_NAME, VERSION, DEFAULT_CONFIG_FILENAME
 from .build_config import BUILD_CONFIG, Options
+from .builder import DocBuilder
+from .renderer.renderer import MdRenderer
+from .generator import Generator
 from argparse import ArgumentParser, RawTextHelpFormatter
 
 
@@ -70,13 +73,20 @@ def clean(args):
 def build(args):
     '''
     Build the docs by generating markdown files. Options can be passed
-    via command-line args or by code2doc.ini file. Preference is:
-    comman-line args > code2doc.ini > default command-line args
+    via command-line args or by code2doc.ini file.
+
+    Preference is:  
+    command-line args > code2doc.ini > default command-line args
     '''
     config = BUILD_CONFIG
     config.load(get_config_path())
     config.parse(args)
-    print(config)
+    for module_path in config[Options.MODULES].value:
+        builder = DocBuilder(module_path, config)
+        print(builder.tree)
+        renderer = MdRenderer(config, builder.abspath)
+        print(renderer)
+        Generator(builder, renderer, config)
 
 
 if __name__ == "__main__":
