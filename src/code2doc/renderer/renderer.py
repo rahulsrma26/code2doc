@@ -5,7 +5,6 @@ Responsible for Rendering the markdown files.
 '''
 
 import os
-from glob import glob
 from typing import Tuple, List
 from ..constants import README, OUTPUT_EXT
 from ..builder import DocNode

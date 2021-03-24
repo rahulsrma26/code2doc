@@ -2,7 +2,6 @@
 '''
 import os
 import sys
-import argparse
 import configparser
 from typing import List
 
