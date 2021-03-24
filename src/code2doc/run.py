@@ -86,7 +86,7 @@ def build(args):
         print(builder.tree)
         renderer = MdRenderer(config, builder.abspath)
         print(renderer)
-        Generator(builder, renderer, config)
+        Generator(builder, renderer, config).generate()
 
 
 if __name__ == "__main__":

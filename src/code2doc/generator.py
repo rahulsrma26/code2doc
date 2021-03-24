@@ -4,8 +4,6 @@
 Responsible for generating the documents.
 '''
 
-import os
-
 from .build_config import Configuration, Options
 from .builder import DocBuilder, DocNode
 from .renderer.renderer import MdRenderer
@@ -18,20 +16,12 @@ class Generator:
         self.config = config
         self.builder = builder
         self.renderer = renderer
-        self.generate(builder.tree)
 
-    def generate(self, node: DocNode):
+    def generate(self):
+        self._generate(self.builder.tree)
+
+    def _generate(self, node: DocNode):
         self.renderer.render(node)
         for child in node.children:
-            self.generate(child)
+            self._generate(child)
 
-
-from .build_config import BUILD_CONFIG
-
-if __name__ == "__main__":
-    this_dir = os.path.dirname(__file__)
-    builder = DocBuilder('./src/code2doc/', BUILD_CONFIG)
-    print(builder.tree)
-    renderer = MdRenderer(BUILD_CONFIG, builder.abspath)
-    print(renderer)
-    Generator(builder, renderer, BUILD_CONFIG)
