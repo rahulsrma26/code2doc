@@ -68,6 +68,12 @@ def clean(args):
     config = BUILD_CONFIG
     config.load(get_config_path())
     print(config[Options.OUTPUT_DIRECTORY].value)
+    for module_path in config[Options.MODULES].value:
+        builder = DocBuilder(module_path, config)
+        print(builder.tree)
+        renderer = MdRenderer(config, builder.abspath)
+        print(renderer)
+        Generator(builder, renderer, config).remove()
 
 
 def build(args):
