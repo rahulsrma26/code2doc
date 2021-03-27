@@ -28,6 +28,7 @@ def main():
         description=init.__doc__,
         formatter_class=RawTextHelpFormatter,
         help=f'create or override the default config file ({DEFAULT_CONFIG_FILENAME})')
+    BUILD_CONFIG.add_arguments(init_parser)
     init_parser.set_defaults(func=init)
 
     build_parser = subparser.add_parser(
@@ -61,7 +62,9 @@ def init(args):
     '''
     This will create default code2doc.ini file in the PWD.
     '''
-    BUILD_CONFIG.save(get_config_path())
+    config = BUILD_CONFIG
+    config.parse(args)
+    config.save(get_config_path())
 
 
 def clean(args):
