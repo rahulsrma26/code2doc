@@ -59,7 +59,3 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.REINDENT_DOCS, True, 'Reindent the docs to avoid top level markdown blocks')).add(
     ConfigOption(Options.ADD_COMPONENT_LINEBREAKS, True, 'Add linebreaks after every doc component')).add(
     ConfigOption(Options.MODULE_NAME_HEADING, True, 'Adds the relative module path as heading in docs.'))
-
-
-if __name__ == "__main__":
-    print(BUILD_CONFIG)

@@ -1,3 +1,6 @@
+'''
+Hi these are different doc types
+'''
 import os
 import sys
 import ast
@@ -157,7 +160,3 @@ class DocModule:
         module = import_module(name, package) if name else import_module(package)
         sys.path[0] = old_path
         return cls(module)
-
-
-if __name__ == "__main__":
-    print(DocModule.from_path('./src', 'code2doc', '.doc_types'))

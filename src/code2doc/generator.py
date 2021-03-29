@@ -40,14 +40,3 @@ class Generator:
             dirpath = os.path.join(self.renderer.out_dir, os.path.dirname(node.target))
             if os.path.isdir(dirpath) and not os.listdir(dirpath):
                 os.rmdir(dirpath)
-
-
-from .build_config import BUILD_CONFIG
-
-if __name__ == "__main__":
-    this_dir = os.path.dirname(__file__)
-    builder = DocBuilder('./src/code2doc/', BUILD_CONFIG)
-    print(builder.tree)
-    renderer = MdRenderer(BUILD_CONFIG, builder.abspath)
-    print(renderer)
-    Generator(builder, renderer, BUILD_CONFIG).remove()

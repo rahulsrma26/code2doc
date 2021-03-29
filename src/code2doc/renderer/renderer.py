@@ -140,16 +140,3 @@ class MdRenderer:
             s += self.class_renderer.render(cls)
             s += self.br()
         return s
-
-
-from ..builder import DocBuilder
-from ..build_config import BUILD_CONFIG
-
-if __name__ == "__main__":
-    this_dir = os.path.dirname(__file__)
-    renderer = MdRenderer(BUILD_CONFIG)
-    print(renderer)
-    builder = DocBuilder('./src/code2doc/', BUILD_CONFIG)
-    print(builder.tree)
-    renderer.render(builder.tree)
-    #     builder.generate('docs')

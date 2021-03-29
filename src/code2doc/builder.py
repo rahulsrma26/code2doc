@@ -77,15 +77,3 @@ class DocBuilder:
                     filepath = os.path.join(path, filename)
                     root.add(self.build_tree(filepath))
                 return root
-
-
-if __name__ == "__main__":
-    config = {
-        Options.IGNORE_DOT: True,
-        Options.IGNORE_UNDERSCORE: True,
-        Options.GENERATE_ROOT_DIRECTORIES: False
-    }
-
-    builder = DocBuilder('./src/code2doc/', config)
-    print(builder.package)
-    print(builder.tree)
