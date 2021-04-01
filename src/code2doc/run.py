@@ -1,6 +1,5 @@
 '''
-A simple code documentation utility for creating markdown file(s)
-form the Docstrings.
+This is the entry point for the commands. Currently, it supports three commands: init, build, and clean.
 '''
 
 import os
@@ -13,6 +12,9 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 
 
 def main():
+    '''
+    Entry function for the module. Create arg-parser and all of the sub-parsers.
+    '''
     parser = ArgumentParser(
         PROGRAM_NAME,
         description=f'Version {VERSION}\n' + __doc__,
@@ -54,13 +56,18 @@ def main():
 
 
 def get_config_path():
+    '''
+    Helper function that returns the config-file path in the present working directory.
+    '''
     cwd = os.getcwd()
     return os.path.join(cwd, DEFAULT_CONFIG_FILENAME)
 
 
 def init(args):
     '''
-    This will create default code2doc.ini file in the PWD.
+    This will create default code2doc.ini file in the present working directory.
+
+    See [build_config](build_config.md) for args.
     '''
     config = BUILD_CONFIG
     config.parse(args)
@@ -68,6 +75,12 @@ def init(args):
 
 
 def clean(args):
+    '''
+    Removes all the doc file(s) created by the config file. It also remove
+    all the empty folders in its sub-directories.
+
+    See [build_config](build_config.md) for args.
+    '''
     config = BUILD_CONFIG
     config.load(get_config_path())
     print(config[Options.OUTPUT_DIRECTORY].value)
@@ -86,6 +99,8 @@ def build(args):
 
     Preference is:  
     command-line args > code2doc.ini > default command-line args
+
+    See [build_config](build_config.md) for args.
     '''
     config = BUILD_CONFIG
     config.load(get_config_path())
