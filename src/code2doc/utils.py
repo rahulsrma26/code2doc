@@ -19,7 +19,12 @@ def read_file(path: str) -> str:
 
 def reindent(s: str, min_spaces: int = 0) -> str:
     '''
-    This reindents a string by keeping only the minimum level of indentation.
+    This reindents text by keeping only the minimum level of indentation.
+
+    * s: str  
+        markdown text which is needed to be reindented.
+    * min_spaces: int  
+        minimum number of spaces to be added as a prefix after reindentation.
     '''
     lines, m = s.splitlines(True), None
     for line in lines:
