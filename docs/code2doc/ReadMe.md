@@ -6,7 +6,7 @@ This documentation is also generated using `code2doc`.
 
 Module dependency graph:
 
-![design](..\img\design.png)
+![design](../img/design.png)
 
 Here are the list of all files and folders in this module:
 
