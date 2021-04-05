@@ -33,6 +33,18 @@ class DocFunction:
             if obj.__module__ == module.__name__:
                 yield cls(obj)
 
+    @staticmethod
+    def get_order(module: types.ModuleType) -> List[str]:
+        order = []
+        if module.__file__ is None:
+            return order
+        with open(module.__file__) as fh:
+            root = ast.parse(fh.read(), module.__file__)
+            for node in ast.iter_child_nodes(root):
+                if isinstance(node, ast.FunctionDef):
+                    order.append(node.name)
+        return order
+
     @classmethod
     def extract_from_class(cls, obj: object) -> Dict[str, 'DocFunction']:
         '''
@@ -85,6 +97,22 @@ class DocClass:
             if obj.__module__ == module.__name__:
                 yield cls(obj)
 
+    @staticmethod
+    def get_order(module: types.ModuleType) -> List[str]:
+        order = []
+        if module.__file__ is None:
+            return order
+        with open(module.__file__) as fh:
+            root = ast.parse(fh.read(), module.__file__)
+            for node in ast.iter_child_nodes(root):
+                if isinstance(node, ast.ClassDef):
+                    functions = []
+                    for cld in ast.iter_child_nodes(node):
+                        if isinstance(cld, ast.FunctionDef):
+                            functions.append(cld.name)
+                    order.append((node.name, functions))
+        return order
+
 
 class DocModule:
     def __init__(self, obj: types.ModuleType):
@@ -93,6 +121,8 @@ class DocModule:
         self.imports = DocModule.get_imports(obj)
         self.functions = list(DocFunction.extract_from_module(obj))
         self.classes = list(DocClass.extract_from_module(obj))
+        self.function_order = DocFunction.get_order(obj)
+        self.class_order = DocClass.get_order(obj)
         self.globals = DocModule.get_globals(obj, self.imports, self.functions, self.classes)
 
     def __str__(self):
