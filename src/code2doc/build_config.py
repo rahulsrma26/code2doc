@@ -20,7 +20,9 @@ class Options:
     LINK_RELATIVE_IMPORTS = 'link_relative_imports'
     SHOW_MODULE_VARIABLES = 'show_module_variables'
     SHOW_MODULE_FUNCTIONS = 'show_module_functions'
+    KEEP_MODULE_FUNCTION_ORDER = 'keep_module_function_order'
     SHOW_MODULE_CLASSES = 'show_module_classes'
+    KEEP_MODULE_CLASS_ORDER = 'keep_module_class_order'
     SHOW_CLASS_VARIABLES = 'show_class_variables'
     SHOW_CLASS_METHODS = 'show_class_methods'
     SHOW_TYPES = 'show_types'
@@ -45,7 +47,9 @@ BUILD_CONFIG = Configuration(PROGRAM_NAME).add(
     ConfigOption(Options.LINK_RELATIVE_IMPORTS, False, 'Link all the relative imports in a file')).add(
     ConfigOption(Options.SHOW_MODULE_VARIABLES, True, 'Show all the variables in a module')).add(
     ConfigOption(Options.SHOW_MODULE_FUNCTIONS, True, 'Show all the functions in a module')).add(
+    ConfigOption(Options.KEEP_MODULE_FUNCTION_ORDER, True, 'Show all the functions in a module in order of definition')).add(
     ConfigOption(Options.SHOW_MODULE_CLASSES, True, 'Show all the classes in a module')).add(
+    ConfigOption(Options.KEEP_MODULE_CLASS_ORDER, True, 'Show all the classes in a module in order of definition')).add(
     ConfigOption(Options.SHOW_CLASS_VARIABLES, True, 'Show all the static variables in a class')).add(
     ConfigOption(Options.SHOW_CLASS_METHODS, True, 'Show all the methods in a class')).add(
     ConfigOption(Options.SHOW_TYPES, True, 'Show types in the function signature')).add(
