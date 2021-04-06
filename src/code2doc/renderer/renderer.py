@@ -9,7 +9,7 @@ from typing import Tuple, List
 from ..constants import README, OUTPUT_EXT
 from ..builder import DocNode
 from ..build_config import Configuration, Options
-from ..doc_types import DocModule
+from ..doc_types import DocClass, DocFunction, DocModule
 from ..utils import read_file
 from .class_renderer import ClassRenderer
 from .function_renderer import FunctionRenderer
@@ -106,20 +106,43 @@ class MdRenderer:
                 s += f'* from {k} import {", ".join(v)} \n'
         return s
 
-    def get_module_function_list(self, module: DocModule) -> str:
+    def get_module_function_list(self, module: DocModule) -> List[DocFunction]:
         if not module.functions or not self.config[Options.SHOW_MODULE_FUNCTIONS]:
-            return ''
-        s = '\nFunctions: \n'
-        for func in module.functions:
-            s += f'* {self.function_renderer.link(func)} \n'
+            return []
+        order = dict(zip(module.function_order, range(len(module.function_order))))
+        if self.config[Options.KEEP_MODULE_FUNCTION_ORDER]:
+            return sorted(module.functions, key=lambda x: order[x.name])
+        else:
+            return sorted(module.functions, key=lambda x: x.name)
+
+    def render_module_functions(self, functions: List[DocFunction], preview: bool=False) -> str:
+        s = '\nFunctions: \n' if preview and functions else ''
+        for func in functions:
+            if preview:
+                s += f'* {self.function_renderer.link(func)} \n'
+            else:
+                s += self.function_renderer.render(func)
+                s += self.br()
         return s
 
-    def get_module_class_list(self, module: DocModule) -> str:
+    def get_module_class_list(self, module: DocModule) -> List[DocClass]:
         if not module.classes or not self.config[Options.SHOW_MODULE_CLASSES]:
-            return ''
-        s = '\nClasses: \n'
-        for cls in module.classes:
-            s += f'* {self.class_renderer.link(cls)} \n'
+            return []
+        classes = [x[0] for x in module.class_order]
+        order = dict(zip(classes, range(len(classes))))
+        if self.config[Options.KEEP_MODULE_CLASS_ORDER]:
+            return sorted(module.classes, key=lambda x: order[x.name])
+        else:
+            return sorted(module.classes, key=lambda x: x.name)
+
+    def render_module_classes(self, classes: DocClass, preview: bool=False) -> str:
+        s = '\nClasses: \n' if preview and classes else ''
+        for cls in classes:
+            if preview:
+                s += f'* {self.class_renderer.link(cls)} \n'
+            else:
+                s += self.class_renderer.render(cls)
+                s += self.br()
         return s
 
     def br(self) -> str:
@@ -128,15 +151,13 @@ class MdRenderer:
         return ''
 
     def get_module_elements(self, node: DocNode) -> str:
+        functions = self.get_module_function_list(node.module)
+        classes = self.get_module_class_list(node.module)
         s = ''
         s += self.get_module_import_list(node.module)
-        s += self.get_module_function_list(node.module)
-        s += self.get_module_class_list(node.module)
+        s += self.render_module_functions(functions, preview=True)
+        s += self.render_module_classes(classes, preview=True)
         s += self.br()
-        for func in node.module.functions:
-            s += self.function_renderer.render(func)
-            s += self.br()
-        for cls in node.module.classes:
-            s += self.class_renderer.render(cls)
-            s += self.br()
+        s += self.render_module_functions(functions, preview=False)
+        s += self.render_module_classes(classes, preview=False)
         return s
