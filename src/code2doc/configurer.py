@@ -55,7 +55,7 @@ class Configuration:
 
     def __getitem__(self, index):
         short, _ = ConfigOption.get_short_n_full_form(index)
-        return self.shorts[short]
+        return self.shorts[short].value
 
     def add_arguments(self, parser):
         for option in self.options:

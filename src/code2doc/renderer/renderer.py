@@ -23,9 +23,9 @@ class MdRenderer:
         '''
         self.config = config
         self.rootpath = rootpath
-        self.header = read_file(config[Options.HEADER_FILE].value)
-        self.footer = read_file(config[Options.FOOTER_FILE].value)
-        self.out_dir = config[Options.OUTPUT_DIRECTORY].value
+        self.header = read_file(config[Options.HEADER_FILE])
+        self.footer = read_file(config[Options.FOOTER_FILE])
+        self.out_dir = config[Options.OUTPUT_DIRECTORY]
         self.class_renderer = ClassRenderer(config)
         self.function_renderer = FunctionRenderer(config)
 
