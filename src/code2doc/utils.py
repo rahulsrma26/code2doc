@@ -26,12 +26,12 @@ def reindent(s: str, min_spaces: int = 0) -> str:
     * min_spaces: int  
         minimum number of spaces to be added as a prefix after reindentation.
     '''
-    lines, m = s.splitlines(True), None
+    lines, m = s.splitlines(True), -1
     for line in lines:
         if not line.isspace():
             indent = len(line) - len(line.lstrip())
-            m = min(m, indent) if m else indent
+            m = min(m, indent) if m >= 0 else indent
     if m:
         lines = [l if l.isspace() else l[m:] for l in lines]
-        prefix = ' ' * min_spaces
-        return ''.join([prefix + l for l in lines])
+    prefix = ' ' * min_spaces
+    return ''.join([prefix + l for l in lines])
