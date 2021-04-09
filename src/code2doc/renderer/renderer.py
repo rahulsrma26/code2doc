@@ -10,7 +10,7 @@ from ..constants import README, OUTPUT_EXT
 from ..builder import DocNode
 from ..build_config import Configuration, Options
 from ..doc_types import DocClass, DocFunction, DocModule
-from ..utils import read_file
+from ..utils import read_file, reindent
 from .class_renderer import ClassRenderer
 from .function_renderer import FunctionRenderer
 
@@ -106,6 +106,15 @@ class MdRenderer:
                 s += f'* from {k} import {", ".join(v)} \n'
         return s
 
+    def get_module_global_list(self, module: DocModule) -> str:
+        variables = module.globals
+        if not variables or not self.config[Options.SHOW_MODULE_VARIABLES]:
+            return ''
+        s = '\nGlobals:  \n'
+        for _, expr in variables:
+            s += f'*   ```py\n{reindent(expr, 4)}\n    ``` \n'
+        return s
+
     def get_module_function_list(self, module: DocModule) -> List[DocFunction]:
         if not module.functions or not self.config[Options.SHOW_MODULE_FUNCTIONS]:
             return []
@@ -155,6 +164,7 @@ class MdRenderer:
         classes = self.get_module_class_list(node.module)
         s = ''
         s += self.get_module_import_list(node.module)
+        s += self.get_module_global_list(node.module)
         s += self.render_module_functions(functions, preview=True)
         s += self.render_module_classes(classes, preview=True)
         s += self.br()

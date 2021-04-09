@@ -123,7 +123,7 @@ class DocModule:
         self.classes = list(DocClass.extract_from_module(obj))
         self.function_order = DocFunction.get_order(obj)
         self.class_order = DocClass.get_order(obj)
-        self.globals = DocModule.get_globals(obj, self.imports, self.functions, self.classes)
+        self.globals = DocModule.get_globals(obj)
 
     def __str__(self):
         s = f'Module [{self.name}]\n'
@@ -172,16 +172,30 @@ class DocModule:
         return names
 
     @staticmethod
-    def get_globals(module: types.ModuleType, imports: dict, *args):
-        exclude = set()
-        for arg in args:
-            for obj in arg:
-                exclude.add(obj.name)
-        variables = []
-        for item, value in getmembers(module):
-            if not item.startswith('_') and item not in imports and item not in exclude:
-                variables.append((item, value))
-        return variables
+    def get_node_range(root: ast.stmt) -> Tuple[int]:
+        if not hasattr(root, 'lineno'):
+            return -1, -1
+        start = end = root.lineno
+        for node in ast.iter_child_nodes(root):
+            _, lineno = DocModule.get_node_range(node)
+            end = max(end, lineno)
+        return start, end
+
+    @staticmethod
+    def get_globals(module: types.ModuleType) -> List[str]:
+        order = []
+        if module.__file__ is None:
+            return order
+        with open(module.__file__) as fh:
+            content = fh.read()
+            lines = content.splitlines(True)
+            root = ast.parse(content, module.__file__)
+            for node in ast.iter_child_nodes(root):
+                if isinstance(node, ast.Assign):
+                    start, end = DocModule.get_node_range(node)
+                    names = [x.id for x in node.targets]
+                    order.append((names, ''.join(lines[start - 1: end])))
+        return order
 
     @classmethod
     def from_path(cls, path: str, package: str, name: str = ''):
