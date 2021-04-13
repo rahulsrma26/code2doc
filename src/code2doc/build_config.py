@@ -2,6 +2,8 @@
 Default options for building the docs. Same options are used for both 
 the `code2doc.ini` file as well as the command line arguments for the 
 build command.
+
+See Also: [Configuration](configurer.md#Configuration), [ConfigOption](configurer.md#ConfigOption)
 '''
 
 from .constants import PROGRAM_NAME

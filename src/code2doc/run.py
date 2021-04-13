@@ -1,5 +1,5 @@
 '''
-This is the entry point for the commands. Currently, it supports three commands: init, build, and clean.
+This is the entry point for the commands. Currently, it supports three sub-commands: init, build, and clean.
 '''
 
 import os
@@ -66,8 +66,6 @@ def get_config_path():
 def init(args):
     '''
     This will create default code2doc.ini file in the present working directory.
-
-    See [build_config](build_config.md) for args.
     '''
     config = BUILD_CONFIG
     config.parse(args)
@@ -78,8 +76,6 @@ def clean(args):
     '''
     Removes all the doc file(s) created by the config file. It also remove
     all the empty folders in its sub-directories.
-
-    See [build_config](build_config.md) for args.
     '''
     config = BUILD_CONFIG
     config.load(get_config_path())
@@ -99,8 +95,6 @@ def build(args):
 
     Preference is:  
     command-line args > code2doc.ini > default command-line args
-
-    See [build_config](build_config.md) for args.
     '''
     config = BUILD_CONFIG
     config.load(get_config_path())
