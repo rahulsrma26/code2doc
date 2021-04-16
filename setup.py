@@ -15,6 +15,6 @@ def get_requirements(filename):
     ]
 
 setup(
-    version='0.0.2',
+    version='0.0.3',
     install_requires=get_requirements('requirements-client.txt')
 )
