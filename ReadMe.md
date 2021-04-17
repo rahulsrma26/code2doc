@@ -12,7 +12,7 @@ Requires: python 3.6+
 
 ### Installing
 
-code2doc is available on PyPi and can be easily installed using pip.
+code2doc is available on [PyPi](https://pypi.org/project/code2doc/) and can be easily installed using pip.
 
 ```sh
 pip install code2doc
