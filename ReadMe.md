@@ -51,3 +51,7 @@ For additional help see `code2doc.ini` file and use help commands and sub-comman
 ```sh
 code2doc -h
 ```
+
+## Source Documentation
+
+See source code documentation [here](https://github.com/rahulsrma26/code2doc/tree/main/docs).
