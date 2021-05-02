@@ -59,7 +59,7 @@ class DocFunction:
 
 
 class DocClass:
-    def __init__(self, obj: object):
+    def __init__(self, obj: object, module: types.ModuleType):
         self.name = obj.__name__
         self.doc = obj.__doc__
         self.base = obj.__base__ if str(obj.__base__) != str(object) else None
@@ -68,6 +68,7 @@ class DocClass:
         if classmethods:
             self.methods['classmethod'] = classmethods
         self.signature = signature(obj)
+        self.variables = DocClass.get_variables(obj, module)
         # self.spec = getfullargspec(obj)
 
     @staticmethod
@@ -95,7 +96,7 @@ class DocClass:
     def extract_from_module(cls, module: types.ModuleType) -> List['DocClass']:
         for _, obj in getmembers(module, isclass):
             if obj.__module__ == module.__name__:
-                yield cls(obj)
+                yield cls(obj, module)
 
     @staticmethod
     def get_order(module: types.ModuleType) -> List[str]:
@@ -111,6 +112,24 @@ class DocClass:
                         if isinstance(cld, ast.FunctionDef):
                             functions.append(cld.name)
                     order.append((node.name, functions))
+        return order
+
+    @staticmethod
+    def get_variables(obj: object, module: types.ModuleType) -> List[str]:
+        order = []
+        if module.__file__ is None:
+            return order
+        with open(module.__file__) as fh:
+            content = fh.read()
+            lines = content.splitlines(True)
+            root = ast.parse(content, module.__file__)
+            for node in ast.iter_child_nodes(root):
+                if isinstance(node, ast.ClassDef) and node.name == obj.__name__:
+                    for cnode in ast.iter_child_nodes(node):
+                        if isinstance(cnode, ast.Assign):
+                            start, end = DocModule.get_node_range(cnode)
+                            names = [x.id for x in cnode.targets]
+                            order.append((names, ''.join(lines[start - 1: end])))
         return order
 
 
@@ -171,6 +190,7 @@ class DocModule:
                         names[n.name] = (node.module, filepath)
         return names
 
+    # Todo: Does not required for modern versions of python
     @staticmethod
     def get_node_range(root: ast.stmt) -> Tuple[int]:
         if not hasattr(root, 'lineno'):
