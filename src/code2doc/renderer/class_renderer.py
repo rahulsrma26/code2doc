@@ -25,6 +25,10 @@ class ClassRenderer:
         s += f'## {cls.name} {base} \n'
         if cls.doc:
             s += f'{cls.doc} \n'
+        if self.config[Options.SHOW_CLASS_VARIABLES] and cls.variables:
+            s += f'\n Static variables: \n'
+            for _, expr in cls.variables:
+                s += f'*   ```py\n{reindent(expr, 4)}\n    ``` \n'
         if self.config[Options.SHOW_CLASS_METHODS]:
             for method_type, methods in cls.methods.items():
                 postfix = 's' if len(methods) > 1 else ''
