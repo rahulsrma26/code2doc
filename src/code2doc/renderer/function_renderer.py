@@ -16,11 +16,12 @@ class FunctionRenderer:
         self.config = config
 
     def link(self, func: DocFunction) -> str:
-        return f'[{func.name} {func.signature}](#{func.name})'
+        return f'[{func.name}](#{func.name})'
 
     def render(self, func: DocFunction) -> str:
         s = '\n'
-        s += f'## {func.name} {func.signature} \n'
+        s += f'## {func.name} \n'
+        s += f'{func.name} {func.signature}\n\n'
         if func.doc:
             doc = reindent(func.doc) if self.config[Options.REINDENT_DOCS] else func.doc
             s += f'{doc} \n'
