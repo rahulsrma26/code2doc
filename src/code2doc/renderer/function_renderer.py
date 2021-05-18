@@ -21,7 +21,7 @@ class FunctionRenderer:
     def render(self, func: DocFunction) -> str:
         s = '\n'
         s += f'## {func.name} \n'
-        s += f'{func.name} {func.signature}\n\n'
+        s += f'`{func.name} {func.signature}`\n\n'
         if func.doc:
             doc = reindent(func.doc) if self.config[Options.REINDENT_DOCS] else func.doc
             s += f'{doc} \n'
