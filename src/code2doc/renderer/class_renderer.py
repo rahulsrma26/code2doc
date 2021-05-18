@@ -35,7 +35,8 @@ class ClassRenderer:
                 s += f'\n{method_type}{postfix}: \n'
                 for obj in methods:
                     name = obj.name.replace("_", "\\_")
-                    s += f'* **{name}** {obj.signature} \n'
+                    s += f'* **{name}** \n'
+                    s += f'`{obj.signature}`\n\n'
                     if obj.doc:
                         doc = reindent(obj.doc, 4) if self.config[Options.REINDENT_DOCS] else obj.doc
                         s += f'{doc} \n'
