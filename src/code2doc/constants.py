@@ -1,3 +1,6 @@
+'''
+Contains all the important constants (mainly string constants) used in the module. 
+'''
 import os
 
 PROGRAM_NAME = 'code2doc'
